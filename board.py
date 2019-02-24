@@ -1,3 +1,5 @@
+from win_condition import WinCondition
+
 class Board:
     def __init__(self, num_rows, num_columns):
         self.num_rows = num_rows
@@ -14,9 +16,10 @@ class Board:
 
         return 0
 
-
-    def check_win(self):
-        return 0
+    def check_win(self, win_condition):
+        win = WinCondition(self._board, win_condition,self._current_move[0], self._current_move[1])
+        print(win.run())
+        return(win.run())
 
     def process_move(self, column_num, player_num):
         print("process move")
@@ -27,13 +30,17 @@ class Board:
         for i in range(len(self._board)):
             if self._board[i][column_num] != 0 :
                 self._board[i-1][column_num] = player_num
+                self._current_move = [i, column_num]
                 print("move processed")
                 return True
             elif i == len(self._board) - 1 and self._board[i][column_num] == 0:
-                self._board[i][column_num] = player_num
+                self._board[i][column_num] = player_num 
+                self._current_move = [i, column_num]               
                 return True
+        
+        
             
-                                
+                   
 
         return 0
     

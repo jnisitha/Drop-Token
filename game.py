@@ -1,6 +1,5 @@
 import sys
-from board import Board 
-from settings import settings
+from board import Board
 from input_output import GameInputOutput
 
 class Game:
@@ -39,25 +38,30 @@ class Game:
     def start_game(self):
         print ("starting game")
         end = False
-              
+        
+        #create new game board.
         self.board = Board(self.num_rows, self.num_columns)
+
+        #game loop
         while end == False:
-            
+            current_player = len(self.move_history) % self.num_players + 1
             player_input = self.input_output.player_input()
-            self.handle_player_input(player_input)
-
-            self.board.check_win()           
-
-        return 0
+            self.handle_player_input(player_input, current_player)
+            won = self.board.check_win(self.win_condition) 
+            if won:
+                self.input_output.win_message()
+                end = True
+            
+        return
         
 
     def update_game(self):
         return 0
 
 
-    def handle_player_input(self, player_input):
+    def handle_player_input(self, player_input, current_player):
         command = str(player_input).strip().split(' ')
-        current_player = len(self.move_history) % self.num_players + 1
+        
 
         if command[0] == "EXIT":
             sys.exit()
@@ -76,7 +80,7 @@ class Game:
         elif command[0] == "BOARD":
             self.board.print_board()
 
-        return 0
+        return
 
 
 new_game = Game()

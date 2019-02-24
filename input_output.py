@@ -20,3 +20,6 @@ class GameInputOutput():
     def player_input(self):
         command = input("")
         return command
+
+    def win_message(self):
+        print("WIN")
