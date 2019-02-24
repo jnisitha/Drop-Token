@@ -77,7 +77,7 @@ class WinCondition():
         return False 
 
     def run(self):
-        print(self.board)
+        #print(self.board)
         if self.check_column() or self.check_row() or self.check_diag_one() or self.check_diag_two():
             return True
         return False

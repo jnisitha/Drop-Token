@@ -12,7 +12,7 @@ class Game:
         self.move_history = []
 
     def setup_game(self):
-        print("setting up game")
+        print("Setting up game")
         start_choice = self.input_output.present_start_menu()
 
         #default settings
@@ -23,10 +23,10 @@ class Game:
             custom_settings = self.input_output.get_custom_settings()
 
             #Custom settings:
-            self.num_players = custom_settings[0]
-            self.num_rows = custom_settings[1]
-            self.num_columns = custom_settings[2]
-            self.win_condition = custom_settings[3]
+            self.num_players = int(custom_settings[0])
+            self.num_rows = int(custom_settings[1])
+            self.num_columns = int(custom_settings[2])
+            self.win_condition = int(custom_settings[3])
 
             self.start_game()
         else: #if input is wrong show error and present game menu.
@@ -36,7 +36,7 @@ class Game:
         return 0
 
     def start_game(self):
-        print ("starting game")
+        print ("Starting game")
         end = False
         
         #create new game board.
@@ -46,8 +46,8 @@ class Game:
         while end == False:
             current_player = len(self.move_history) % self.num_players + 1
             player_input = self.input_output.player_input()
-            self.handle_player_input(player_input, current_player)
-            won = self.board.check_win(self.win_condition) 
+            won = self.handle_player_input(player_input, current_player)
+            
             if won:
                 self.input_output.win_message()
                 end = True
@@ -68,12 +68,14 @@ class Game:
         elif command[0] == "GET":
             print(self.move_history)
         elif command[0] == "PUT":
-            print("processing move " + command[1])
+            #print("processing move " + command[1])
             column_num = int(command[1]) - 1
 
             move_made = self.board.process_move(column_num, current_player)
             if move_made:
                 self.move_history.append(command[1])
+                won = self.board.check_win(self.win_condition)
+                return won 
             else:
                 self.input_output.error_message()
                 
