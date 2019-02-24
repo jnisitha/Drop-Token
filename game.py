@@ -17,10 +17,10 @@ class Game:
         start_choice = self.input_output.present_start_menu()
 
         #default settings
-        if start_choice == 1: 
+        if start_choice == '1': 
             self.start_game()
         #Custom settings
-        elif start_choice == 2: 
+        elif start_choice == '2': 
             custom_settings = self.input_output.get_custom_settings()
 
             #Custom settings:
@@ -39,12 +39,14 @@ class Game:
     def start_game(self):
         print ("starting game")
         end = False
-        move_number = 1
-        board = Board(self.num_rows, self.num_columns)
-        # while !end:
-        #     current_player = move_number % self.num_players + 1
-        #     player_input = self.input_output.player_input(current_player)
-        #     self.handle_player_input(player_input)
+              
+        self.board = Board(self.num_rows, self.num_columns)
+        while end == False:
+            
+            player_input = self.input_output.player_input()
+            self.handle_player_input(player_input)
+
+            self.board.check_win()           
 
         return 0
         
@@ -54,21 +56,26 @@ class Game:
 
 
     def handle_player_input(self, player_input):
-        if player_input == "EXIT":
+        command = str(player_input).strip().split(' ')
+        current_player = len(self.move_history) % self.num_players + 1
+
+        if command[0] == "EXIT":
             sys.exit()
-        elif player_input == "GET":
+        elif command[0] == "GET":
             print(self.move_history)
-        elif type(player_input) == int:
-            print("blah")
-            
-        return 0
+        elif command[0] == "PUT":
+            print("processing move " + command[1])
+            column_num = int(command[1]) - 1
 
-
-    def check_win_or_draw(self, move):
-
-        # for x in range(self.win_condition):
-        #     for y in (self.win_condition):
+            move_made = self.board.process_move(column_num, current_player)
+            if move_made:
+                self.move_history.append(command[1])
+            else:
+                self.input_output.error_message()
                 
+        elif command[0] == "BOARD":
+            self.board.print_board()
+
         return 0
 
 

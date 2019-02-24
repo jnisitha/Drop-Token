@@ -2,7 +2,7 @@ class GameInputOutput():
 
     def present_start_menu(self):
         start_choice = input("Please select a game mode: \n 1. Play game \n 2. Custom game \n")
-        print("Start choice: " + str(start_choice))
+        print("Start choice: " + start_choice)
         return start_choice
 
     def get_custom_settings(self):
@@ -17,5 +17,6 @@ class GameInputOutput():
         print("ERROR")
         return 0
 
-    def player_input(self, player_num):
-        move = input("Player " + str(player_num) + " please enter a move")
+    def player_input(self):
+        command = input("")
+        return command
