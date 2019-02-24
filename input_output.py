@@ -13,4 +13,9 @@ class GameInputOutput():
 
         return (num_players, num_rows, num_columns, win_condition)
 
-    
+    def error_message(self):
+        print("ERROR")
+        return 0
+
+    def player_input(self, player_num):
+        move = input("Player " + str(player_num) + " please enter a move")
