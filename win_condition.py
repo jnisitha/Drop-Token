@@ -1,21 +1,3 @@
-# _board_one =[
-#             [0,1,0,1,2,5,4],
-#             [2,3,4,0,7,3,7],
-#             [3,1,4,0,3,3,1],
-#             [2,1,4,3,3,6,1],
-#             [1,2,3,3,6,7,3],
-#             [2,4,3,5,6,2,9]]
-
-# _board_one = [
-#             [1, 0, 0, 0], 
-#             [1, 2, 0, 0], 
-#             [1, 2, 0, 0], 
-#             [1, 2, 0, 0]]
-
-# _win_condition = 4
-# _current_move_row = 0
-# _current_move_column = 0
-
 class WinCondition():
     def __init__ (self, current_board, win_condition, current_move_row, current_move_column):
         self.win_condition = win_condition
@@ -81,10 +63,3 @@ class WinCondition():
         if self.check_column() or self.check_row() or self.check_diag_one() or self.check_diag_two():
             return True
         return False
-
-# win = WinCondition(_board_one, _win_condition, _current_move_row, _current_move_column)
-# print(win.check_row())
-# print(win.check_column())
-# print(win.check_diag_one())
-# print(win.check_diag_two())
-# print(win.run())

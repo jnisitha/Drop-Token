@@ -23,3 +23,6 @@ class GameInputOutput():
 
     def win_message(self):
         print("WIN")
+    
+    def print_ok(self):
+        print("OK")

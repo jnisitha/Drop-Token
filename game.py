@@ -73,6 +73,7 @@ class Game:
 
             move_made = self.board.process_move(column_num, current_player)
             if move_made:
+                self.input_output.print_ok()
                 self.move_history.append(command[1])
                 won = self.board.check_win(self.win_condition)
                 return won 
