@@ -4,6 +4,7 @@ from game_io import GameInputOutput
 
 class Game:
     def __init__(self, num_players = 2, num_rows = 4, num_columns = 4, win_threshold = 4):
+        '''        '''
         self.num_players = num_players
         self.num_rows = num_rows
         self.num_columns = num_columns
@@ -12,7 +13,7 @@ class Game:
         self.current_player = 1
 
     def setup_game(self):
-        # print("Setting up game")
+        '''Presents Custom Game options to player and overrides default settings.'''
         start_choice = GameInputOutput.get_start_choice()
 
         invalid_choice = True
@@ -33,10 +34,11 @@ class Game:
         self.start_game()
 
     def next_player(self):
+        '''Changes the current_player property once their move has ended'''
         self.current_player = (self.current_player % self.num_players) + 1
 
     def start_game(self):
-        #print ("Starting game")
+        ''' The main game loop. Loops until player wins/draws/exits'''
         end = False
         
         #create new game board.
@@ -51,6 +53,12 @@ class Game:
                 GameInputOutput.print_win_message()
                 end = True
             
+            draw = self.board.check_draw()
+
+            if draw:
+                GameInputOutput.print_draw_message()
+                end = True
+                
             self.next_player()
 
     def handle_put(self, column_num):
