@@ -36,7 +36,7 @@ class Game:
         self.current_player = (self.current_player % self.num_players) + 1
 
     def start_game(self):
-        print ("Starting game")
+        #print ("Starting game")
         end = False
         
         #create new game board.
@@ -48,7 +48,7 @@ class Game:
             won = self.board.check_win(self.win_threshold)
 
             if won:
-                GameInputOutput.win_message()
+                GameInputOutput.print_win_message()
                 end = True
             
             self.next_player()
