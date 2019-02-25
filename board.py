@@ -1,4 +1,5 @@
 from win_condition import WinCondition
+from game_io import GameInputOutput
 
 class Board:
     def __init__(self, num_rows, num_columns):
@@ -8,21 +9,15 @@ class Board:
         
 
     def print_board(self):
-        for i in range(len(self._board)):
-            print("| " + ' '.join([str(v) for v in self._board[i]]))
-        
-        print("+" + "-" * len(self._board[0]) * 2)
-        print("  " + ' '.join([str(i) for i in range(1, 1 + len(self._board[0]))]))
+        GameInputOutput.print_board(self._board)
 
-        return 0
 
-    def check_win(self, win_condition):
-        win = WinCondition(self._board, win_condition,self._current_move[0], self._current_move[1])
-        return(win.run())
+    def check_win(self, win_threshold):
+        win = WinCondition(self._board, win_threshold,self._current_move[0], self._current_move[1])
+        return(win.evaluate())
 
     def process_move(self, column_num, player_num):
         #print("processing move")
-
         if self._board[0][column_num] != 0 or column_num > len(self._board[0]):
             return False
 

@@ -1,39 +1,39 @@
 import sys
 from board import Board
-from input_output import GameInputOutput
+from game_io import GameInputOutput
 
 class Game:
-    def __init__(self):
-        self.input_output = GameInputOutput()
-        self.num_players = 2
-        self.num_rows = 4
-        self.num_columns = 4
-        self.win_condition = 4
+    def __init__(self, num_players = 2, num_rows = 4, num_columns = 4, win_threshold = 4):
+        self.num_players = num_players
+        self.num_rows = num_rows
+        self.num_columns = num_columns
+        self.win_threshold = win_threshold
         self.move_history = []
+        self.current_player = 1
 
     def setup_game(self):
-        print("Setting up game")
-        start_choice = self.input_output.present_start_menu()
+        # print("Setting up game")
+        start_choice = GameInputOutput.get_start_choice()
 
-        #default settings
-        if start_choice == '1': 
-            self.start_game()
-        #Custom settings
-        elif start_choice == '2': 
-            custom_settings = self.input_output.get_custom_settings()
+        invalid_choice = True
+        while invalid_choice:
+            #Default settings
+            if start_choice == '1':
+                invalid_choice = False
+            #Custom settings
+            elif start_choice == '2': 
+                custom_settings = GameInputOutput.get_custom_settings()
 
-            #Custom settings:
-            self.num_players = int(custom_settings[0])
-            self.num_rows = int(custom_settings[1])
-            self.num_columns = int(custom_settings[2])
-            self.win_condition = int(custom_settings[3])
+                self.num_players = int(custom_settings[0])
+                self.num_rows = int(custom_settings[1])
+                self.num_columns = int(custom_settings[2])
+                self.win_threshold = int(custom_settings[3])
+                invalid_choice = False
 
-            self.start_game()
-        else: #if input is wrong show error and present game menu.
-            self.input_output.error_message()
-            start_choice = self.input_output.present_start_menu()
+        self.start_game()
 
-        return 0
+    def next_player(self):
+        self.current_player = (self.current_player % self.num_players) + 1
 
     def start_game(self):
         print ("Starting game")
@@ -43,48 +43,43 @@ class Game:
         self.board = Board(self.num_rows, self.num_columns)
 
         #game loop
-        while end == False:
-            current_player = len(self.move_history) % self.num_players + 1
-            player_input = self.input_output.player_input()
-            won = self.handle_player_input(player_input, current_player)
-            
+        while not end:           
+            self.handle_player_input()
+            won = self.board.check_win(self.win_threshold)
+
             if won:
-                self.input_output.win_message()
+                GameInputOutput.win_message()
                 end = True
             
-        return
+            self.next_player()
+
+    def handle_put(self, column_num):
         
+        current_player = len(self.move_history) % self.num_players + 1
+        move_made = self.board.process_move(column_num, current_player)
 
-    def update_game(self):
-        return 0
+        if move_made:
+            GameInputOutput.print_ok()
+            self.move_history.append(column_num)            
+        else:
+            GameInputOutput.error_message()
 
-
-    def handle_player_input(self, player_input, current_player):
-        command = str(player_input).strip().split(' ')
-        
+    def handle_player_input(self):
+        player_input = GameInputOutput.get_player_input()
+        command = str(player_input).strip().split()   
 
         if command[0] == "EXIT":
             sys.exit()
         elif command[0] == "GET":
-            print(self.move_history)
-        elif command[0] == "PUT":
-            #print("processing move " + command[1])
-            column_num = int(command[1]) - 1
-
-            move_made = self.board.process_move(column_num, current_player)
-            if move_made:
-                self.input_output.print_ok()
-                self.move_history.append(command[1])
-                won = self.board.check_win(self.win_condition)
-                return won 
-            else:
-                self.input_output.error_message()
-                
+            GameInputOutput.print_move_history(self.move_history)
+        elif command[0] == "PUT":            
+            self.handle_put(int(command[1]))
         elif command[0] == "BOARD":
             self.board.print_board()
 
         return
 
 
-new_game = Game()
-new_game.setup_game()
+if __name__ == "__main__":
+    new_game = Game()
+    new_game.start_game()
