@@ -29,8 +29,9 @@ class GameInputOutput:
     def print_ok():
         print("OK")
             
-    def print_move_history(move_history):
-        print(move_history)
+    def print_move_history(move_history):        
+        for i in range(len(move_history)):
+            print(move_history[i])
 
     def print_board(board):        
         for i in range(len(board)):
