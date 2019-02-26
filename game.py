@@ -3,7 +3,20 @@ from board import Board
 from game_io import GameInputOutput
 
 class Game:
+    ''' Initiates a game based on default or custom game settings.
+    
+        for default settings run     --- python3 game.py
+        for custom settings menu run --- python3 game.py custom
+        
+        once in game following commands can be entered:
+            PUT <column> --- puts piece in specified column
+            GET          --- list move history
+            BOARD        --- show board
+            EXIT         --- exits game
+    '''
+
     def __init__(self, num_players = 2, num_rows = 4, num_columns = 4, win_threshold = 4):
+        ''' Initiates with default values.'''
         self.num_players = num_players
         self.num_rows = num_rows
         self.num_columns = num_columns
@@ -37,7 +50,7 @@ class Game:
         self.current_player = (self.current_player % self.num_players) + 1
 
     def start_game(self):
-        ''' The main game loop. Loops until player exits'''
+        ''' The main game loop. Loops until player exits.'''
         end = False
         
         #create new game board.
@@ -60,7 +73,7 @@ class Game:
                 self.next_player()
 
     def handle_put(self, column_num):
-        '''Handles the move a player makes (putting of a piece)'''
+        '''Handles the move a player makes (putting of a piece).'''
         current_player = len(self.move_history) % self.num_players + 1
         move_made = self.board.process_move(column_num - 1, current_player)
         print(column_num)

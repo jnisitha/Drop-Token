@@ -2,6 +2,7 @@ from win_condition import WinCondition
 from game_io import GameInputOutput
 
 class Board:
+    ''' Rectangular Board for playing the game. '''
     def __init__(self, num_rows, num_columns):
         ''' Creates an empty board (filled with zeros) '''
         self.num_rows = num_rows
