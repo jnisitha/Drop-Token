@@ -1,25 +1,25 @@
 from win_condition import WinCondition
 from game_io import GameInputOutput
 
+
 class Board:
     ''' Rectangular Board for playing the game. '''
+
     def __init__(self, num_rows, num_columns):
         ''' Creates an empty board (filled with zeros) '''
         self.num_rows = num_rows
         self.num_columns = num_columns
         self.board = [[0 for i in range(num_columns)] for j in range(num_rows)]
-        
 
     def print_board(self):
         '''Prints the board'''
         GameInputOutput.print_board(self.board)
 
-
     def check_win(self, win_threshold):
         '''Checks if current move won the game.'''
-        win = WinCondition(self.board, win_threshold,self.current_move[0], self.current_move[1])
-        return(win.evaluate())
-    
+        win = WinCondition(self.board, win_threshold, self.current_move[0], self.current_move[1])
+        return (win.evaluate())
+
     def check_draw(self):
         '''Checks if the board is in a drawn position'''
         for row in range(len(self.board)):
@@ -38,16 +38,11 @@ class Board:
             return False
 
         for i in range(len(self.board)):
-            if self.board[i][column_num] != 0 :
-                self.board[i-1][column_num] = player_num
+            if self.board[i][column_num] != 0:
+                self.board[i - 1][column_num] = player_num
                 self.current_move = [i, column_num]
-                #print("move processed")
                 return True
             elif i == len(self.board) - 1 and self.board[i][column_num] == 0:
-                self.board[i][column_num] = player_num 
-                self.current_move = [i, column_num]               
+                self.board[i][column_num] = player_num
+                self.current_move = [i, column_num]
                 return True
-    
-
-
-    

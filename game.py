@@ -2,21 +2,11 @@ import sys
 from board import Board
 from game_io import GameInputOutput
 
-class Game:
-    ''' Initiates a game based on default or custom game settings.
-    
-        for default settings run     --- python3 game.py
-        for custom settings menu run --- python3 game.py custom
-        
-        once in game following commands can be entered:
-            PUT <column> --- puts piece in specified column
-            GET          --- list move history
-            BOARD        --- show board
-            EXIT         --- exits game
-    '''
 
-    def __init__(self, num_players = 2, num_rows = 4, num_columns = 4, win_threshold = 4):
-        ''' Initiates with default values.'''
+class Game:
+    '''Handles the initialization and the game loop.'''
+
+    def __init__(self, num_players=2, num_rows=4, num_columns=4, win_threshold=4):
         self.num_players = num_players
         self.num_rows = num_rows
         self.num_columns = num_columns
@@ -30,11 +20,11 @@ class Game:
 
         invalid_choice = True
         while invalid_choice:
-            #Default settings
+            # Default settings
             if start_choice == '1':
                 invalid_choice = False
-            #Custom settings
-            elif start_choice == '2': 
+            # Custom settings
+            elif start_choice == '2':
                 custom_settings = GameInputOutput.get_custom_settings()
 
                 self.num_players = int(custom_settings[0])
@@ -52,48 +42,47 @@ class Game:
     def start_game(self):
         ''' The main game loop. Loops until player exits.'''
         end = False
-        
-        #create new game board.
+
+        # create new game board.
         self.board = Board(self.num_rows, self.num_columns)
 
-        #game loop
-        while not end:           
+        # game loop
+        while not end:
             move_made = self.handle_player_input()
             if move_made:
                 won = self.board.check_win(self.win_threshold)
 
                 if won:
                     GameInputOutput.print_win_message()
-                
+
                 draw = self.board.check_draw()
 
                 if draw:
                     GameInputOutput.print_draw_message()
-                    
+
                 self.next_player()
 
     def handle_put(self, column_num):
         '''Handles the move a player makes (putting of a piece).'''
         current_player = len(self.move_history) % self.num_players + 1
         move_made = self.board.process_move(column_num - 1, current_player)
-        print(column_num)
         if move_made:
             GameInputOutput.print_ok()
             self.move_history.append(column_num)
-            return True            
+            return True
         else:
             GameInputOutput.print_error_message()
 
     def handle_player_input(self):
         '''Waits for player input and redirects accordingly.'''
         player_input = GameInputOutput.get_player_input()
-        command = str(player_input).strip().split()   
+        command = str(player_input).strip().split()
 
         if command[0] == "EXIT":
             sys.exit()
         elif command[0] == "GET":
             GameInputOutput.print_move_history(self.move_history)
-        elif command[0] == "PUT":            
+        elif command[0] == "PUT":
             move_made = self.handle_put(int(command[1]))
             return move_made
         elif command[0] == "BOARD":
